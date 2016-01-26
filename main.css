@@ -1,0 +1,146 @@
+html, body {
+  margin: 0;
+  overflow: hidden;
+  padding: 0; }
+
+body {
+  background: #ED5D52;
+  font: normal 32px/48px 'Colfax', Helvetica, Arial, sans-serif; }
+
+#main {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; }
+
+.avatar {
+  float:left;
+  margin: 25px;
+  height: 100px;
+  width: 100px;
+  border-radius: 50px;
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center; }
+
+.main-nav {
+  background: #FFF;
+  color: #234312;
+  height: 150px;
+  padding-bottom: 30px;
+  font-weight: lighter;
+  margin-top: 0px;
+}
+
+.logout-button, .login-button {
+  border: 3px solid #ED5D52;
+  border-radius: 50px;
+  height: 100px;
+  width: 200px;
+  background: none;
+  color: #e45f5d;
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 28px;
+  float: right;
+  margin: 25px; }
+
+.header {
+  display: inline-block;
+  float: left; }
+
+.header h1 {
+  font-size: 50px;
+  margin: 0 0 0 5px;
+  line-height: 150px;
+}
+
+.main-foot {
+  height: 300px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background-color: white;
+}
+
+.empty-view {
+  width: 100%;
+  height: 200px;
+  padding: 0 50px;
+  position: absolute;
+  top: 50%;
+  margin-top: -200px;
+  text-align: center;
+  font-size: 40px;
+  font-style: italic;
+  font-weight: lighter;
+  line-height: 1.8em; }
+
+#viewport {
+  position: absolute;
+  top:  150px;
+  bottom: 300px;
+  width: 100%;
+  background: #ED5D52;
+}
+  #viewport .stack {width: 94%;
+    height: 94%;
+    position: absolute;
+    top: 3%;
+    left: 3%; }
+
+  #viewport li {
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    border-radius: 5px;
+    position: absolute;
+    background-color: #EDEDED;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    top: 0;
+    left: 0; }
+
+.throw-control {
+  height: 150px;
+  width: 350px;
+  margin: 75px auto 25px auto; }
+  .throw-button {
+    background: #FFF;
+    border: 3px solid #ED5D52;
+    height: 150px;
+    width: 150px;
+    display: inline-block;
+    font-size: 60px;
+    color: #ED5D52;
+    text-align: center;
+    position: relative;
+    line-height: 150px;
+    z-index: 2;
+  }
+  .throw-left  { float: left;  }
+  .throw-right { float: right; }
+  .throw-button:link,
+  .throw-button:visited,
+  .throw-button:hover,
+  .throw-button:active {
+    color: #ED5D52;
+    text-decoration: none; }
+
+  .throw-button {
+    border-radius: 50%; }
+
+.stats {
+  height: 50px;
+  width: 100%;}
+
+  .stats-block {
+    width: 50%;
+    float: left;
+    display: inline-block;;
+    height: 100%;
+    text-transform: uppercase;
+    font-size: 20px;
+    line-height: 50px;
+    text-align: center; }

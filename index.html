@@ -1,0 +1,147 @@
+<html>
+  <head>
+    <title>Unclogg your Favorites!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./main.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-narrative-api/dist/angular-narrative-api.js"></script>
+    <script src="./bower_components/angular-swing/dist/angular-swing.js"></script>
+
+    <script>
+      angular
+        .module('UncloggFavorites', ['api.narrative', 'gajus.swing'])
+        .config(function ($locationProvider) {
+          $locationProvider.html5Mode({
+            enabled: true,
+            requireBase: false
+          });
+        })
+        .config(function (NarrativeAuthProvider , NarrativeRequestProvider) {
+            NarrativeAuthProvider.defaults.oauthApplication = {
+              clientID: "H2nHmNke8sJ9VfUiiGtvDQOpGu1AoixuYvt2o8Ul",
+              redirectURI: window.location.protocol + '//' + window.location.host,
+              clientSecret: "XJ1En6LUWALz1wWwMa9AMeUt1952SbpUCp7WsetJWNV6BlA" +
+                            "ogWfATI9W1I3oGqbaJjq1Nrf88FGfzIkEMyddL2P8TorLIM" +
+                            "2LEeitoPBBaShhx6qfchAcf1E8LROdkxa2"
+            };
+            NarrativeAuthProvider.defaults.oauthRoutes.token =
+              "https://narrativeapp.com/oauth2/token/";
+          })
+        .controller('MainController', function (NarrativeAuth, $scope, NarrativeApi) {
+          var main = this;
+
+          $scope.options = {
+            isThrowOut: function (offset, elementWidth) {
+              return Math.min(Math.abs(offset) / elementWidth, 1) > 0.4;
+            }
+          };
+
+          main.getUrl = function(photo) {
+            return photo.type === 'photo' ? photo.renders.g1_smartphone.url
+                                          : photo.video_thumbs[0].renders.g1_hd.url;
+          }
+
+          main.stats = {kept: 0, unfavorited: 0};
+
+          function doThrow(unlike, asynchronous) {
+            var photo = main.photos.results.splice(0, 1)[0];
+
+            console.log(photo);
+            if (main.photos.results.length < 10)
+              main.photos.nextPage();
+
+            if (unlike){
+              photo.update({favorite: false});
+              main.stats.unfavorited++;
+            } else {
+              main.stats.kept++;
+            }
+
+            if (asynchronous)
+              $scope.$apply();
+          }
+
+          main.throwLeft = angular.bind(main, doThrow, true, true);
+          main.throwRight = angular.bind(main, doThrow, false, true);
+          main.clickLeft = angular.bind(main, doThrow, true, false);
+          main.clickRight = angular.bind(main, doThrow, false, false);
+
+          main.auth = NarrativeAuth();
+          main.auth.waitForAuth().then(function () {
+            var api = NarrativeApi();
+            main.user = api.me().get();
+            main.photos = api.favorites({limit: 5}).get();
+          });
+        });
+    </script>
+    <style>
+      .photo img { width: 100%; }
+    </style>
+  </head>
+  <body ng-app="UncloggFavorites">
+    <div id="main"
+         ng-controller="MainController as main">
+      <nav class="main-nav">
+        <span class="avatar"
+              ng-style="{backgroundImage: 'url('+main.user.avatar.src+')'}">
+        </span>
+        <header class="header">
+          <h1>{{main.user.full_name}}</h1>
+        </header>
+        <button class="login-button"
+                ng-show="!main.auth.token()"
+                ng-click="main.auth.oauthAuthorizationCode()">
+          Login
+        </button>
+        <button class="logout-button"
+                ng-show="main.auth.token()"
+                ng-click="main.auth.unauth(); main.user = undefined;">
+          Logout
+        </button>
+      </nav>
+      <div ng-show="main.auth.token()"
+           id="viewport">
+        <ul class="stack"
+            swing-stack
+            swing-options="options">
+          <li swing-card
+              ng-repeat="photo in main.photos.results track by photo.uuid"
+              swing-on-throwoutleft="main.throwLeft()"
+              swing-on-throwoutright="main.throwRight()"
+              ng-style="{
+                zIndex: (1000000 - $index),
+                backgroundImage: 'url(' + main.getUrl(photo) +')'
+              }"></li>
+        </ul>
+    </div>
+    <div ng-hide="main.auth.token()">
+      <p class="empty-view">
+        Ever feel like your Favorite tab is getting a bit clogged? No worries,
+        we got you covered.
+      </p>
+    </div>
+    <footer class="main-foot"
+            ng-hide="!main.auth.token()">
+      <div class="throw-control">
+        <a class="throw-button throw-left"
+           href="#"
+           ng-click="main.clickLeft()">X</a>
+        <a  class="throw-button throw-right"
+           href="#"
+           ng-click="main.clickRight()">&#9825;</a>
+      </div>
+      <div class="stats">
+        <span class="stats-block">
+          kept: <strong>{{main.stats.kept}}</strong>
+        </span>
+        <span class="stats-block">
+          unfavorited: <strong>{{main.stats.unfavorited}}</strong>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>

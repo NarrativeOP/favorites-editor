@@ -1,0 +1,12 @@
+{
+  "name": "favorite-unclogger",
+  "version": "0.0.1",
+  "description": "A swipeable Favorite unclogger.",
+  "main": "index.html",
+  "keywords": [
+    "Swipe",
+    "Narrative"
+  ],
+  "author": "Anton Amlinger <anton.amlinger@narrativeteam.com>",
+  "license": "MIT"
+}
