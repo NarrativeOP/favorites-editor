@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Unclogg your Favorites!</title>
+    <title>Narrative Favorites Editor.</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="./main.css">
@@ -13,7 +13,7 @@
 
     <script>
       angular
-        .module('UncloggFavorites', ['api.narrative', 'gajus.swing'])
+        .module('FavoritesEditor', ['api.narrative', 'gajus.swing'])
         .config(function ($locationProvider) {
           $locationProvider.html5Mode({
             enabled: true,
@@ -82,7 +82,7 @@
       .photo img { width: 100%; }
     </style>
   </head>
-  <body ng-app="UncloggFavorites">
+  <body ng-app="FavoritesEditor">
     <div id="main"
          ng-controller="MainController as main">
       <nav class="main-nav">
@@ -120,8 +120,9 @@
     </div>
     <div ng-hide="main.auth.token()">
       <p class="empty-view">
-        Ever feel like your Favorite tab is getting a bit clogged? No worries,
-        we got you covered.
+        Create a truly great collection of Narrative Favorites by easily quick
+        editing them with the Favorite Editor. Just swipe right or ‘heart’ the
+        Favorites you want to keep, and swipe left to un-favorite!
       </p>
     </div>
     <footer class="main-foot"
